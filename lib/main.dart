@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+enum POSITIONS { endDocked, centerFloat, endFloat, centerDocked }
+
 void main() {
   runApp(const MyApp());
 }
@@ -23,6 +25,7 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primarySwatch: Colors.blue,
+        brightness: Brightness.dark,
       ),
       home: const MyHomePage(title: 'My Ledger'),
     );
@@ -49,6 +52,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  FloatingActionButtonLocation _fabLocation = FloatingActionButtonLocation.endDocked;
+  POSITIONS? _character = POSITIONS.endDocked;
 
   void _incrementCounter() {
     setState(() {
@@ -95,20 +100,26 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+            // const Text(
+            //   'You have pushed the button this many times:',
+            // ),
+            // Text(
+            //   '$_counter',
+            //   style: Theme.of(context).textTheme.headline4,
+            // ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
         child: const Icon(Icons.add),
+        onPressed: () => {}),
+      floatingActionButtonLocation: this._fabLocation,
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.blue,
+        shape: CircularNotchedRectangle(),
+        child: Container(
+          height: 50.0,
+        ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
