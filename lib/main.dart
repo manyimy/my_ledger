@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_ledger/settings.dart';
 
 enum POSITIONS { endDocked, centerFloat, endFloat, centerDocked }
 
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatelessWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -46,25 +47,7 @@ class MyHomePage extends StatefulWidget {
 
   final String title;
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  FloatingActionButtonLocation _fabLocation = FloatingActionButtonLocation.endDocked;
-  POSITIONS? _character = POSITIONS.endDocked;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  final FloatingActionButtonLocation _fabLocation = FloatingActionButtonLocation.endDocked;
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(title),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -99,20 +82,67 @@ class _MyHomePageState extends State<MyHomePage> {
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            // const Text(
-            //   'You have pushed the button this many times:',
-            // ),
-            // Text(
-            //   '$_counter',
-            //   style: Theme.of(context).textTheme.headline4,
-            // ),
+          // children: <Widget>[
+          //   const Text(
+          //     'You have pushed the button this many times:',
+          //   ),
+          //   Text(
+          //     '$_counter',
+          //     style: Theme.of(context).textTheme.headline4,
+          //   ),
+          // ],
+        ),
+      ),
+      drawer: Drawer(
+        // Add a ListView to the drawer. This ensures the user can scroll
+        // through the options in the drawer if there isn't enough vertical
+        // space to fit everything.
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: [
+              DrawerHeader(
+                decoration: const BoxDecoration(
+                  color: Colors.blue,
+                ),
+                child: Container(
+                  alignment: Alignment.bottomLeft,
+                  height: 10,
+                  child: const Text(
+                    'Account',
+                    style: TextStyle(fontSize: 22),
+                  ),
+                ),
+              ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: const Text('Dashboard'),
+              onTap: () {
+                // Update the state of the app
+                // ...
+                // Then close the drawer
+
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: const Text('Settings'),
+              onTap: () {
+                // Update the state of the app
+                // ...
+                // Then close the drawer
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const SettingsPage(title: "Settings");
+                }));
+              },
+            ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () => {}),
+          child: const Icon(Icons.add),
+          onPressed: () => {}),
       floatingActionButtonLocation: this._fabLocation,
       bottomNavigationBar: BottomAppBar(
         color: Colors.blue,
