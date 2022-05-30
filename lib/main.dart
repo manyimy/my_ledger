@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import 'package:my_ledger/dashboard.dart';
+// import 'package:my_ledger/drawer.dart';
 import 'package:my_ledger/settings.dart';
 
 enum POSITIONS { endDocked, centerFloat, endFloat, centerDocked }
@@ -33,7 +36,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -47,110 +50,120 @@ class MyHomePage extends StatelessWidget {
 
   final String title;
 
-  final FloatingActionButtonLocation _fabLocation = FloatingActionButtonLocation.endDocked;
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+// class _MyHomePageState extends State<MyHomePage> {
+//   final FloatingActionButtonLocation _fabLocation = FloatingActionButtonLocation.endDocked;
+//   List<Widget> bodyWidgets = [DashboardPage(), SettingsPage()];
+//
+//   int index = 0;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     // This method is rerun every time setState is called, for instance as done
+//     // by the _incrementCounter method above.
+//     //
+//     // The Flutter framework has been optimized to make rerunning build methods
+//     // fast, so that you can just rebuild anything that needs updating rather
+//     // than having to individually change instances of widgets.
+//     return Scaffold(
+//       appBar: AppBar(
+//         // Here we take the value from the MyHomePage object that was created by
+//         // the App.build method, and use it to set our appbar title.
+//         title: Text(widget.title),
+//       ),
+//       body: Center(
+//         // Center is a layout widget. It takes a single child and positions it
+//         // in the middle of the parent.
+//         child: Column(
+//           // Column is also a layout widget. It takes a list of children and
+//           // arranges them vertically. By default, it sizes itself to fit its
+//           // children horizontally, and tries to be as tall as its parent.
+//           //
+//           // Invoke "debug painting" (press "p" in the console, choose the
+//           // "Toggle Debug Paint" action from the Flutter Inspector in Android
+//           // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+//           // to see the wireframe for each widget.
+//           //
+//           // Column has various properties to control how it sizes itself and
+//           // how it positions its children. Here we use mainAxisAlignment to
+//           // center the children vertically; the main axis here is the vertical
+//           // axis because Columns are vertical (the cross axis would be
+//           // horizontal).
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           // children: <Widget>[
+//           //   const Text(
+//           //     'You have pushed the button this many times:',
+//           //   ),
+//           //   Text(
+//           //     '$_counter',
+//           //     style: Theme.of(context).textTheme.headline4,
+//           //   ),
+//           // ],
+//         ),
+//       ),
+//       drawer: MyDrawer(),
+//       floatingActionButton: FloatingActionButton(
+//           child: const Icon(Icons.add),
+//           onPressed: () => {}),
+//       floatingActionButtonLocation: this._fabLocation,
+//       bottomNavigationBar: BottomAppBar(
+//         color: Colors.blue,
+//         shape: CircularNotchedRectangle(),
+//         child: Container(
+//           height: 50.0,
+//         ),
+//       ), // This trailing comma makes auto-formatting nicer for build methods.
+//     );
+//   }
+// }
+
+class _MyHomePageState extends State<MyHomePage> {
+  List<Widget> bodyWidgets = [DashboardPage(), SettingsPage()];
+
+  int index = 0;
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          // children: <Widget>[
-          //   const Text(
-          //     'You have pushed the button this many times:',
-          //   ),
-          //   Text(
-          //     '$_counter',
-          //     style: Theme.of(context).textTheme.headline4,
-          //   ),
-          // ],
+        appBar: AppBar(
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Text(widget.title),
         ),
-      ),
-      drawer: Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: [
-              DrawerHeader(
-                decoration: const BoxDecoration(
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              const DrawerHeader(
+                decoration: BoxDecoration(
                   color: Colors.blue,
                 ),
-                child: Container(
-                  alignment: Alignment.bottomLeft,
-                  height: 10,
-                  child: const Text(
-                    'Account',
-                    style: TextStyle(fontSize: 22),
-                  ),
-                ),
+                child: Text('Drawer Header'),
               ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: const Text('Dashboard'),
-              onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: const Text('Settings'),
-              onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const SettingsPage(title: "Settings");
-                }));
-              },
-            ),
-          ],
+              ListTile(
+                title: const Text('Item 0'),
+                onTap: () {
+                  setState(() {
+                    index = 0;
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+              ListTile(
+                title: const Text('Item 1'),
+                onTap: () {
+                  setState(() {
+                    index = 1;
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
-          onPressed: () => {}),
-      floatingActionButtonLocation: this._fabLocation,
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.blue,
-        shape: CircularNotchedRectangle(),
-        child: Container(
-          height: 50.0,
-        ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        body: bodyWidgets[index]);
   }
 }
