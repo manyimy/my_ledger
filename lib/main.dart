@@ -31,13 +31,13 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         brightness: Brightness.dark,
       ),
-      home: const MyHomePage(title: 'My Ledger'),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({Key? key}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -47,8 +47,6 @@ class MyHomePage extends StatefulWidget {
   // case the title) provided by the parent (in this case the App widget) and
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
-
-  final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -124,6 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Widget> bodyWidgets = [DashboardPage(), SettingsPage()];
 
   int index = 0;
+  String title = "My Ledger";
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
-          title: Text(widget.title),
+          title: Text(this.title),
         ),
         drawer: Drawer(
           child: ListView(
@@ -144,19 +143,23 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Text('Drawer Header'),
               ),
               ListTile(
-                title: const Text('Item 0'),
+                leading: Icon(Icons.home),
+                title: const Text('Dashboard'),
                 onTap: () {
                   setState(() {
                     index = 0;
+                    setTitle(title: 'My Ledger');
                     Navigator.pop(context);
                   });
                 },
               ),
               ListTile(
-                title: const Text('Item 1'),
+                leading: Icon(Icons.settings),
+                title: const Text('Settings'),
                 onTap: () {
                   setState(() {
                     index = 1;
+                    setTitle(title: 'Settings');
                     Navigator.pop(context);
                   });
                 },
@@ -165,5 +168,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         body: bodyWidgets[index]);
-  }
+    }
+
+    void setTitle({required title}) {
+      this.title = title;
+    }
 }
