@@ -133,7 +133,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<Widget> bodyWidgets = [DashboardPage(), SettingsPage()];
 
-  int index = 1;
+  int index = 0;  // default page index
   String title = "My Ledger";
 
   @override
