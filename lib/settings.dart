@@ -15,8 +15,9 @@ class _SettingsPage extends State<SettingsPage>
   with RestorationMixin {
 
   // bool _darkMode = false;
-  final RestorableBool _darkMode = RestorableBool(false);
-  final RestorableInt _currentFabLocation = RestorableInt(_fabLocations.indexOf(DashboardPage.fabLocation.value));
+  final RestorableBool _darkMode = RestorableBool(MyApp.themeNotifier.value == ThemeMode.dark);
+  final RestorableInt _currentFabLocation =
+    RestorableInt(_fabLocations.indexOf(DashboardPage.fabLocation.value));
 
   @override
   String get restorationId => 'darkmode_fablocation';
