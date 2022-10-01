@@ -30,12 +30,12 @@ class AddEntryDialogState extends State<AddEntryDialog> {
           //           style: Theme.of(context).textTheme.subtitle1?.copyWith(color: Colors.white))),
           // ],
         ),
-        // body: const TabBarView(
-        //   children: [
-        //     Icon(Icons.directions_car),
-        //     Icon(Icons.directions_transit),
-        //   ],
-        // ),
+        body: const TabBarView(
+          children: [
+            Icon(Icons.directions_car),
+            Icon(Icons.directions_transit),
+          ],
+        ),
       ),
     );
   }

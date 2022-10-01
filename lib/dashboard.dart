@@ -8,7 +8,7 @@ import 'package:my_ledger/addEntryDialog.dart';
 
 class DashboardPage extends StatelessWidget {
   static final ValueNotifier<FloatingActionButtonLocation> fabLocation =
-  ValueNotifier(FloatingActionButtonLocation.endDocked);
+  ValueNotifier(FloatingActionButtonLocation.endFloat);
 
   const DashboardPage({Key? key}) : super(key: key);
 
@@ -51,13 +51,13 @@ class DashboardPage extends StatelessWidget {
                   }
               ),
               floatingActionButtonLocation: currentFabLocation,
-              bottomNavigationBar: BottomAppBar(
-                color: Colors.blue,
-                shape: CircularNotchedRectangle(),
-                child: Container(
-                  height: 50.0,
-                ),
-              )
+              // bottomNavigationBar: BottomAppBar(
+              //   color: Colors.blue,
+              //   shape: CircularNotchedRectangle(),
+              //   child: Container(
+              //     height: 50.0,
+              //   ),
+              // )
           );
         }
     );

@@ -52,9 +52,9 @@ class _SettingsPage extends State<SettingsPage>
   }
 
   static const List<FloatingActionButtonLocation> _fabLocations = [
-    FloatingActionButtonLocation.startDocked,
-    FloatingActionButtonLocation.centerDocked,
-    FloatingActionButtonLocation.endDocked,
+    FloatingActionButtonLocation.startFloat,
+    FloatingActionButtonLocation.centerFloat,
+    FloatingActionButtonLocation.endFloat,
   ];
 
   @override
@@ -72,19 +72,19 @@ class _SettingsPage extends State<SettingsPage>
           child: Text('Floating Action Button Position'),
         ),
         RadioListTile<int>(
-          title: Text('Docked - Left'),
+          title: Text('Float - Left'),
           value: 0,
           groupValue: _currentFabLocation.value,
           onChanged: _onFabLocationChanged,
         ),
         RadioListTile<int>(
-          title: Text('Docked - Center'),
+          title: Text('Float - Center'),
           value: 1,
           groupValue: _currentFabLocation.value,
           onChanged: _onFabLocationChanged,
         ),
         RadioListTile<int>(
-          title: Text('Docked - Right'),
+          title: Text('Float - Right'),
           value: 2,
           groupValue: _currentFabLocation.value,
           onChanged: _onFabLocationChanged,
