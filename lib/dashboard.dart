@@ -10,8 +10,8 @@ class DashboardPage extends StatelessWidget {
   static final ValueNotifier<FloatingActionButtonLocation> fabLocation =
   ValueNotifier(FloatingActionButtonLocation.endFloat);
 
-  const DashboardPage({Key? key}) : super(key: key);
-
+  DashboardPage({Key? key}) : super(key: key);
+  var addEntryDialogStateInstance = AddEntryDialogState();
   // static Route<void> _fullscreenDialogRoute(
   //     BuildContext context,
   //     Object? arguments,
@@ -33,33 +33,87 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(addEntryDialogStateInstance.records);
     return ValueListenableBuilder<FloatingActionButtonLocation>(
         valueListenable: fabLocation,
         builder: (_, FloatingActionButtonLocation currentFabLocation, __) {
           return Scaffold(
-              floatingActionButton: FloatingActionButton(
-                  child: const Icon(Icons.add),
-                  onPressed: () {
-                    // timeDilation = 5.0; // slow down animation
-                    Navigator.of(context).push( MaterialPageRoute<Null>(
-                        builder: (BuildContext context) {
-                          return const AddEntryDialog();
-                        },
-                        fullscreenDialog: true
-                    ));
-                    // Navigator.restorablePush<void>(context, _fullscreenDialogRoute);
-                  }
-              ),
-              floatingActionButtonLocation: currentFabLocation,
-              // bottomNavigationBar: BottomAppBar(
-              //   color: Colors.blue,
-              //   shape: CircularNotchedRectangle(),
-              //   child: Container(
-              //     height: 50.0,
-              //   ),
-              // )
-          );
+            body: Column(
+              children: [
+                const Text('Deliver features faster'),
+                const Divider(
+                  color: Colors.grey, //color of divider
+                  height: 25, //height spacing of divider
+                  thickness: 0.5, //thickness of divider line
+                  indent: 30, //spacing at the start of divider
+                  endIndent: 30, //spacing at the end of divider
+                ),
+                // const Text('Deliver features faster'),
+                ListView(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  children: addEntryDialogStateInstance.records.map((Record record) {
+                    return RecordItem(
+                      record: record,
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
+            floatingActionButton: FloatingActionButton(
+                child: const Icon(Icons.add),
+                onPressed: () {
+                  // timeDilation = 5.0; // slow down animation
+                  Navigator.of(context).push( MaterialPageRoute<void>(
+                      builder: (BuildContext context) {
+                        return const AddEntryDialog();
+                      },
+                      fullscreenDialog: true
+                  ));
+                  // Navigator.restorablePush<void>(context, _fullscreenDialogRoute);
+                }
+            ),
+            floatingActionButtonLocation: currentFabLocation,
+            // bottomNavigationBar: BottomAppBar(
+            //   color: Colors.blue,
+            //   shape: CircularNotchedRectangle(),
+            //   child: Container(
+            //     height: 50.0,
+            //   ),
+            // )
+        );
         }
+    );
+  }
+}
+
+class Record {
+  Record({required this.category, required this.money, required this.date, this.description=""});
+  final String category;
+  double money;
+  DateTime date;
+  String description;
+}
+
+class RecordItem extends StatelessWidget{
+  RecordItem({
+    required this.record,
+  }) : super(key: ObjectKey(record));
+
+  final Record record;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      onTap: () {
+        // TODO: View details
+      },
+      leading: CircleAvatar(
+        child: Text(record.category[0]),
+      ),
+      // title: Text(record.category),
+      title: Text((record.description != "" ? record.description : "${record.category} ${record.money}")),
     );
   }
 }

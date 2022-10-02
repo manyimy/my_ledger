@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_ledger/dashboard.dart';
+import 'package:my_ledger/main.dart';
 
 class AddEntryDialog extends StatefulWidget {
   const AddEntryDialog({Key? key}) : super(key: key);
@@ -8,6 +10,31 @@ class AddEntryDialog extends StatefulWidget {
 }
 
 class AddEntryDialogState extends State<AddEntryDialog> {
+
+  final TextEditingController categoryController = TextEditingController();
+  final TextEditingController moneyController = TextEditingController();
+  final TextEditingController dateController = TextEditingController();
+  final List<Record> _records = <Record>[];
+  List<Record> get records => _records;
+
+  @override
+  void dispose() {
+    categoryController.dispose();
+    moneyController.dispose();
+    dateController.dispose();
+    super.dispose();
+  }
+
+  void _addRecordItem(String category, double money, DateTime date) {
+    setState(() {
+      _records.add(Record(category: category, money: money, date: date));
+    });
+    print(_records);
+    categoryController.clear();
+    moneyController.clear();
+    dateController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -21,22 +48,82 @@ class AddEntryDialogState extends State<AddEntryDialog> {
             ],
           ),
           title: const Text('New Record'),
-          // actions: [
-          //   TextButton(
-          //       onPressed: () {
-          //         //TODO: Handle save
-          //       },
-          //       child: Text('SAVE',
-          //           style: Theme.of(context).textTheme.subtitle1?.copyWith(color: Colors.white))),
-          // ],
+          actions: [
+            TextButton(
+                onPressed: () {
+                  //TODO: Handle save
+                  Navigator.of(context).push(MaterialPageRoute<void>(
+                      builder: (context) => const MyHomePage()
+                  ));
+                  _addRecordItem(categoryController.text, double.parse(moneyController.text), DateTime.parse(dateController.text));
+                },
+                child: Text('SAVE',
+                    style: Theme.of(context).textTheme.subtitle1?.copyWith(color: Colors.white))),
+          ],
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
-            Icon(Icons.directions_car),
-            Icon(Icons.directions_transit),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                  child: TextField(
+                    controller: categoryController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: "Enter category",
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                  child: TextFormField(
+                    controller: moneyController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: "Enter expense",
+                    ),
+                    validator: (value) {
+                      if(value == null) {
+                        return null;
+                      }
+                      final n = num.tryParse(value);
+                      if(n == null) {
+                        return '"$value" is not a valid number';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                  child: TextField(
+                    controller: dateController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: "Pick your date",
+                    ),
+                    onTap: () async {
+                      var date = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(1900),
+                        lastDate: DateTime(2100)
+                      );
+                      dateController.text = date.toString().substring(0, 10);
+                      print(DateTime.parse(dateController.text));
+                    },
+                  ),
+                )
+              ],
+            ),
+            const Icon(Icons.directions_transit),
           ],
         ),
       ),
     );
   }
 }
+
+// https://daily-dev-tips.com/posts/build-a-todo-list-app-with-flutter/
