@@ -29,7 +29,8 @@ class AddEntryDialogState extends State<AddEntryDialog> {
     setState(() {
       _records.add(Record(category: category, money: money, date: date));
     });
-    print(_records);
+    print("-----records:-----");
+    print(_records.toString());
     categoryController.clear();
     moneyController.clear();
     dateController.clear();
@@ -52,11 +53,11 @@ class AddEntryDialogState extends State<AddEntryDialog> {
             TextButton(
                 onPressed: () {
                   //TODO: Handle save
+                  _addRecordItem(categoryController.text, double.parse(moneyController.text), DateTime.parse(dateController.text));
+                  Navigator.of(context).pop();
                   Navigator.of(context).push(MaterialPageRoute<void>(
                       builder: (context) => const MyHomePage()
-                  ));
-                  _addRecordItem(categoryController.text, double.parse(moneyController.text), DateTime.parse(dateController.text));
-                },
+                  ));                },
                 child: Text('SAVE',
                     style: Theme.of(context).textTheme.subtitle1?.copyWith(color: Colors.white))),
           ],

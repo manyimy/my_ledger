@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
 import 'package:my_ledger/dashboard.dart';
 // import 'package:my_ledger/drawer.dart';
 import 'package:my_ledger/settings.dart';
 
 enum POSITIONS { endDocked, centerFloat, endFloat, centerDocked }
 
-void main() {
+Future<void> main() async {
   runApp(const MyApp());
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 }
 
 class MyApp extends StatelessWidget {

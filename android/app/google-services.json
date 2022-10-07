@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "737974640851",
+    "project_id": "my-ledger-3b79c",
+    "storage_bucket": "my-ledger-3b79c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:737974640851:android:cc1dfa7c232e81af783426",
+        "android_client_info": {
+          "package_name": "com.manyimy.my_ledger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "737974640851-rjfg37sc9025t7gues4kpug3pj1p4uu1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBV_Sb3RR5mtep4aXB1mDBWPL20Tz2jX1w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "737974640851-rjfg37sc9025t7gues4kpug3pj1p4uu1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "737974640851-f44evhl9o0oj7gd5tjgod3lg6mrbmfmh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.manyimy.myLedger"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

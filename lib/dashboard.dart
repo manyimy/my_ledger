@@ -33,7 +33,8 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(addEntryDialogStateInstance.records);
+    print("-----in dashboard-----");
+    print(addEntryDialogStateInstance.records.toString());
     return ValueListenableBuilder<FloatingActionButtonLocation>(
         valueListenable: fabLocation,
         builder: (_, FloatingActionButtonLocation currentFabLocation, __) {
@@ -48,7 +49,7 @@ class DashboardPage extends StatelessWidget {
                   indent: 30, //spacing at the start of divider
                   endIndent: 30, //spacing at the end of divider
                 ),
-                // const Text('Deliver features faster'),
+                const Text('Deliver features faster'),
                 ListView(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
@@ -94,6 +95,12 @@ class Record {
   double money;
   DateTime date;
   String description;
+  @override
+  String toString() {
+    // TODO: implement toString
+    var str = "Cat: " + this.category + "\nMoney: " + this.money.toString() + "\nDate: " + this.date.toString() + "\nDesc: " + this.description;
+    return str;
+  }
 }
 
 class RecordItem extends StatelessWidget{
