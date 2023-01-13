@@ -10,7 +10,8 @@ class DashboardPage extends StatelessWidget {
   static final ValueNotifier<FloatingActionButtonLocation> fabLocation =
   ValueNotifier(FloatingActionButtonLocation.endFloat);
 
-  DashboardPage({Key? key}) : super(key: key);
+  final List<Record> records;
+  DashboardPage({Key? key, this.records = const []}) : super(key: key);
   var addEntryDialogStateInstance = AddEntryDialogState();
   // static Route<void> _fullscreenDialogRoute(
   //     BuildContext context,
@@ -34,6 +35,7 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("-----in dashboard-----");
+    // var rere = <Record>[Record(category: "qwerty", money: 12.34, date: DateTime.now())];
     print(addEntryDialogStateInstance.records.toString());
     return ValueListenableBuilder<FloatingActionButtonLocation>(
         valueListenable: fabLocation,
@@ -54,7 +56,8 @@ class DashboardPage extends StatelessWidget {
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  children: addEntryDialogStateInstance.records.map((Record record) {
+                  // children: addEntryDialogStateInstance.records.map((Record record) {
+                  children: records.map((Record record) {
                     return RecordItem(
                       record: record,
                     );

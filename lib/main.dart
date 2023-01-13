@@ -56,7 +56,9 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  final List<Record> records;
+
+  const MyHomePage({Key? key, this.records = const []}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -72,7 +74,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Widget> bodyWidgets = [DashboardPage(), SettingsPage()];
+  late List<Widget> bodyWidgets = [DashboardPage(records: widget.records,), const SettingsPage()];
 
   int index = 0;  // default page index
   String title = "My Ledger";
@@ -83,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
-          title: Text(this.title),
+          title: Text(title),
         ),
         drawer: Drawer(
           child: ListView(

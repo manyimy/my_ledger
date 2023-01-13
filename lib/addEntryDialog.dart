@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:my_ledger/dashboard.dart';
 import 'package:my_ledger/main.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class AddEntryDialog extends StatefulWidget {
   const AddEntryDialog({Key? key}) : super(key: key);
 
@@ -26,6 +30,19 @@ class AddEntryDialogState extends State<AddEntryDialog> {
   }
 
   void _addRecordItem(String category, double money, DateTime date) {
+    var db = FirebaseFirestore.instance;
+
+    // Create a new user with a first and last name
+    final expenseRecord = <String, dynamic>{
+      "category": category,
+      "expense": money,
+      "date": date
+    };
+
+    // Add a new document with a generated ID
+    db.collection("expenses").add(expenseRecord).then((documentSnapshot) =>
+        print("Added Data with ID: ${documentSnapshot.id}"));
+
     setState(() {
       _records.add(Record(category: category, money: money, date: date));
     });
@@ -56,7 +73,7 @@ class AddEntryDialogState extends State<AddEntryDialog> {
                   _addRecordItem(categoryController.text, double.parse(moneyController.text), DateTime.parse(dateController.text));
                   Navigator.of(context).pop();
                   Navigator.of(context).push(MaterialPageRoute<void>(
-                      builder: (context) => const MyHomePage()
+                      builder: (context) => MyHomePage(records: _records)
                   ));                },
                 child: Text('SAVE',
                     style: Theme.of(context).textTheme.subtitle1?.copyWith(color: Colors.white))),
