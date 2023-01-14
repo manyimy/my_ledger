@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 // import 'package:flutter/scheduler.dart' show timeDilation;
 
 import 'package:my_ledger/addEntryDialog.dart';
-// import 'package:flutter_gen/gen_l10n/gallery_localizations.dart';
-// import 'package:gallery/data/gallery_options.dart';
-// import 'package:gallery/demos/material/material_demo_types.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DashboardPage extends StatelessWidget {
   static final ValueNotifier<FloatingActionButtonLocation> fabLocation =
   ValueNotifier(FloatingActionButtonLocation.endFloat);
 
-  final List<Record> records;
-  DashboardPage({Key? key, this.records = const []}) : super(key: key);
+  List<Record> records = <Record>[];
   var addEntryDialogStateInstance = AddEntryDialogState();
+  var db = FirebaseFirestore.instance;
+
   // static Route<void> _fullscreenDialogRoute(
   //     BuildContext context,
   //     Object? arguments,
@@ -31,39 +32,85 @@ class DashboardPage extends StatelessWidget {
   //       fullscreenDialog: true
   //   ));
   // }
+  Future<List<Record>> getData() async {
+    records = [];
+    await db.collection("expenses").get().then((event) {
+      print("in firestore get data");
+      for (var doc in event.docs) {
+        print(doc.data()["category"]);
+        print("${doc.id} => ${doc.data()}");
+        records.add(
+            Record( category: doc.data()["category"],
+                money: doc.data()["money"],
+                date: doc.data()["date"].toDate(),
+                description: (doc.data()["description"] != null) ? doc.data()["description"] : ""
+            )
+        );
+      }
+    });
+    print(records.toString());
+    return records;
+  }
 
   @override
   Widget build(BuildContext context) {
+
     print("-----in dashboard-----");
-    // var rere = <Record>[Record(category: "qwerty", money: 12.34, date: DateTime.now())];
-    print(addEntryDialogStateInstance.records.toString());
+
     return ValueListenableBuilder<FloatingActionButtonLocation>(
         valueListenable: fabLocation,
         builder: (_, FloatingActionButtonLocation currentFabLocation, __) {
           return Scaffold(
-            body: Column(
-              children: [
-                const Text('Deliver features faster'),
-                const Divider(
-                  color: Colors.grey, //color of divider
-                  height: 25, //height spacing of divider
-                  thickness: 0.5, //thickness of divider line
-                  indent: 30, //spacing at the start of divider
-                  endIndent: 30, //spacing at the end of divider
-                ),
-                const Text('Deliver features faster'),
-                ListView(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  // children: addEntryDialogStateInstance.records.map((Record record) {
-                  children: records.map((Record record) {
-                    return RecordItem(
-                      record: record,
+            body: FutureBuilder(
+              future: getData(),
+              builder: (ctx, snapshot) {
+                // Checking if future is resolved or not
+                if (snapshot.connectionState == ConnectionState.done) {
+                  // If we got an error
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text(
+                        '${snapshot.error} occurred',
+                        style: const TextStyle(fontSize: 18),
+                      ),
                     );
-                  }).toList(),
-                ),
-              ],
+
+                    // if we got our data
+                  } else if (snapshot.hasData) {
+                    // Extracting data from snapshot object
+                    final data = snapshot.data as List<Record>;
+                    return Column(
+                        children: [
+                          const Text('Deliver features faster'),
+                          const Divider(
+                            color: Colors.grey, //color of divider
+                            height: 25, //height spacing of divider
+                            thickness: 0.5, //thickness of divider line
+                            indent: 30, //spacing at the start of divider
+                            endIndent: 30, //spacing at the end of divider
+                          ),
+                          const Text('Deliver features faster'),
+                          ListView(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            // children: addEntryDialogStateInstance.records.map((Record record) {
+                            children: records.map((Record record) {
+                              return RecordItem(
+                                record: record,
+                              );
+                            }).toList(),
+                          ),
+                        ],
+                    );
+                  }
+                }
+
+                // Displaying LoadingSpinner to indicate waiting state
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
             ),
             floatingActionButton: FloatingActionButton(
                 child: const Icon(Icons.add),
@@ -101,7 +148,7 @@ class Record {
   @override
   String toString() {
     // TODO: implement toString
-    var str = "Cat: " + this.category + "\nMoney: " + this.money.toString() + "\nDate: " + this.date.toString() + "\nDesc: " + this.description;
+    var str = "Cat: " + this.category + "\nMoney: " + this.money.toStringAsFixed(2) + "\nDate: " + this.date.toString() + "\nDesc: " + this.description;
     return str;
   }
 }

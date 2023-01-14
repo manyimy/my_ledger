@@ -18,8 +18,8 @@ class AddEntryDialogState extends State<AddEntryDialog> {
   final TextEditingController categoryController = TextEditingController();
   final TextEditingController moneyController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
-  final List<Record> _records = <Record>[];
-  List<Record> get records => _records;
+  // final List<Record> _records = <Record>[];
+  // List<Record> get records => _records;
 
   @override
   void dispose() {
@@ -29,25 +29,26 @@ class AddEntryDialogState extends State<AddEntryDialog> {
     super.dispose();
   }
 
-  void _addRecordItem(String category, double money, DateTime date) {
+  void _addRecordItem(String category, double money, DateTime date, {String description = ""}) {
     var db = FirebaseFirestore.instance;
 
     // Create a new user with a first and last name
     final expenseRecord = <String, dynamic>{
       "category": category,
-      "expense": money,
-      "date": date
+      "money": money,
+      "date": date,
+      "description": description
     };
 
     // Add a new document with a generated ID
     db.collection("expenses").add(expenseRecord).then((documentSnapshot) =>
         print("Added Data with ID: ${documentSnapshot.id}"));
 
-    setState(() {
-      _records.add(Record(category: category, money: money, date: date));
-    });
+    // setState(() {
+    //   _records.add(Record(category: category, money: money, date: date));
+    // });
     print("-----records:-----");
-    print(_records.toString());
+    // print(_records.toString());
     categoryController.clear();
     moneyController.clear();
     dateController.clear();
@@ -73,7 +74,7 @@ class AddEntryDialogState extends State<AddEntryDialog> {
                   _addRecordItem(categoryController.text, double.parse(moneyController.text), DateTime.parse(dateController.text));
                   Navigator.of(context).pop();
                   Navigator.of(context).push(MaterialPageRoute<void>(
-                      builder: (context) => MyHomePage(records: _records)
+                      builder: (context) => MyHomePage()
                   ));                },
                 child: Text('SAVE',
                     style: Theme.of(context).textTheme.subtitle1?.copyWith(color: Colors.white))),

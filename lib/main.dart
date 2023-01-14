@@ -10,11 +10,13 @@ import 'package:my_ledger/settings.dart';
 enum POSITIONS { endDocked, centerFloat, endFloat, centerDocked }
 
 Future<void> main() async {
-  runApp(const MyApp());
-
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  runApp(const MyApp());
+
+
 }
 
 class MyApp extends StatelessWidget {
@@ -56,9 +58,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  final List<Record> records;
+  const MyHomePage({Key? key}) : super(key: key);
 
-  const MyHomePage({Key? key, this.records = const []}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -74,7 +75,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late List<Widget> bodyWidgets = [DashboardPage(records: widget.records,), const SettingsPage()];
+  late List<Widget> bodyWidgets = [DashboardPage(), const SettingsPage()];
 
   int index = 0;  // default page index
   String title = "My Ledger";
